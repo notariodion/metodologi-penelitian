@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metodologi Penelitian — Pendahuluan</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal:   #00897B;
+    --teal-l: #4DB6AC;
+    --mint:   #E0F2F1;
+    --dark:   #0D2B2A;
+    --mid:    #1A3D3B;
+    --acc:    #FFB300;
+    --acc2:   #FF6D00;
+    --white:  #F8FDFC;
+    --gray:   #90A4AE;
+    --danger: #E53935;
+    --ok:     #43A047;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── PROGRESS BAR ─────────────────────────── */
+  #progress-bar {
+    position: fixed; top: 0; left: 0; height: 4px;
+    background: linear-gradient(90deg, var(--teal-l), var(--acc));
+    transition: width .4s ease; z-index: 9999;
+  }
+
+  /* ── TOPBAR ───────────────────────────────── */
+  #topbar {
+    position: fixed; top: 4px; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 28px;
+    background: rgba(13,43,42,.92);
+    backdrop-filter: blur(14px);
+    z-index: 999;
+    border-bottom: 1px solid rgba(0,137,123,.25);
+  }
+  #topbar .logo { font-family:'Syne',sans-serif; font-weight:800; font-size:13px; letter-spacing:2px; color:var(--teal-l); text-transform:uppercase; }
+  #topbar .slide-counter { font-size:12px; color:var(--gray); }
+  #topbar .timer-wrap { display:flex; align-items:center; gap:8px; }
+  #topbar .timer { font-family:'Syne',sans-serif; font-size:14px; color:var(--acc); }
+  #topbar .timer-label { font-size:11px; color:var(--gray); }
+
+  /* ── SLIDES CONTAINER ─────────────────────── */
+  #slides-wrap { padding-top: 72px; }
+
+  /* ── EACH SLIDE ───────────────────────────── */
+  .slide {
+    display: none;
+    min-height: calc(100vh - 72px);
+    padding: 48px 7vw 80px;
+    animation: fadeUp .5s ease both;
+  }
+  .slide.active { display: flex; flex-direction: column; justify-content: center; }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(22px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* ── TYPOGRAPHY ───────────────────────────── */
+  .slide-tag {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--teal-l); font-weight: 600; margin-bottom: 14px;
+  }
+  .slide h1 {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(2rem, 5vw, 3.6rem);
+    line-height: 1.1; color: var(--white);
+  }
+  .slide h2 {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    color: var(--teal-l); margin-bottom: 20px;
+  }
+  .slide h3 {
+    font-family: 'Syne', sans-serif; font-weight: 600;
+    font-size: 1.05rem; color: var(--acc); margin-bottom: 10px;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .slide p { font-size: .97rem; line-height: 1.7; color: #CFE8E6; margin-bottom: 12px; }
+  .lead { font-size: 1.12rem !important; color: var(--white) !important; font-weight: 300; }
+  .quote-block {
+    border-left: 4px solid var(--acc);
+    padding: 14px 20px; margin: 20px 0;
+    background: rgba(255,179,0,.07);
+    border-radius: 0 8px 8px 0;
+    font-style: italic; font-size: 1.1rem;
+    color: var(--acc);
+  }
+
+  /* ── GRID HELPERS ─────────────────────────── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+  .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 28px; align-items: start; }
+  @media(max-width:700px) { .grid-2,.grid-3,.grid-2-1 { grid-template-columns:1fr; } }
+
+  /* ── CARDS ────────────────────────────────── */
+  .card {
+    background: var(--mid);
+    border: 1px solid rgba(0,137,123,.3);
+    border-radius: 14px; padding: 22px 22px;
+    transition: transform .25s, border-color .25s;
+  }
+  .card:hover { transform: translateY(-4px); border-color: var(--teal); }
+  .card-icon { font-size: 2rem; margin-bottom: 10px; }
+  .card h3 { font-size: .88rem; }
+  .card p { font-size: .88rem; color: #a8ccc9; margin-bottom: 0; }
+
+  .card-accent { background: linear-gradient(135deg,rgba(0,137,123,.35),rgba(0,137,123,.1)); border-color: var(--teal); }
+  .card-warn   { background: linear-gradient(135deg,rgba(255,179,0,.18),rgba(255,179,0,.05)); border-color: var(--acc); }
+  .card-danger { background: linear-gradient(135deg,rgba(229,57,53,.18),rgba(229,57,53,.05)); border-color: var(--danger); }
+  .card-ok     { background: linear-gradient(135deg,rgba(67,160,71,.18),rgba(67,160,71,.05)); border-color: var(--ok); }
+
+  /* ── PILLS / BADGES ───────────────────────── */
+  .badge {
+    display: inline-block; padding: 4px 13px; border-radius: 99px;
+    font-size: .76rem; font-weight: 600; letter-spacing: .5px; margin: 3px 3px 3px 0;
+  }
+  .badge-teal   { background:rgba(0,137,123,.25); color:var(--teal-l); border:1px solid var(--teal); }
+  .badge-acc    { background:rgba(255,179,0,.18); color:var(--acc); border:1px solid var(--acc); }
+  .badge-danger { background:rgba(229,57,53,.18); color:#EF9A9A; border:1px solid var(--danger); }
+  .badge-ok     { background:rgba(67,160,71,.18); color:#A5D6A7; border:1px solid var(--ok); }
+
+  /* ── STEP LIST ────────────────────────────── */
+  .step-list { list-style:none; display:flex; flex-direction:column; gap:12px; }
+  .step-list li {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: var(--mid); border-radius: 10px; padding: 14px 16px;
+    border: 1px solid rgba(0,137,123,.2);
+  }
+  .step-num {
+    min-width: 30px; height: 30px; border-radius: 50%;
+    background: var(--teal); color: var(--dark);
+    display: flex; align-items:center; justify-content:center;
+    font-family: 'Syne',sans-serif; font-weight: 800; font-size: .85rem;
+  }
+  .step-text { font-size: .9rem; color: #CFE8E6; line-height: 1.5; }
+  .step-text strong { color: var(--white); display: block; margin-bottom: 3px; }
+
+  /* ── COVER SLIDE ──────────────────────────── */
+  .cover {
+    background: radial-gradient(ellipse at 60% 40%, rgba(0,137,123,.35) 0%, transparent 70%),
+                radial-gradient(ellipse at 20% 80%, rgba(255,179,0,.15) 0%, transparent 60%),
+                var(--dark);
+    text-align: center; align-items: center;
+  }
+  .cover .big-num {
+    font-family: 'Syne',sans-serif; font-size: clamp(5rem,15vw,12rem);
+    font-weight: 800; color: rgba(0,137,123,.12); line-height: 1;
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    user-select: none; pointer-events: none;
+  }
+  .cover-content { position: relative; z-index: 2; max-width: 700px; }
+  .cover h1 { font-size: clamp(2.2rem,6vw,4rem); margin-bottom: 18px; }
+  .cover .subtitle { font-size: 1.1rem; color: var(--gray); margin-bottom: 28px; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 18px 0; }
+  .start-btn {
+    display: inline-block; margin-top: 28px;
+    padding: 14px 36px; border-radius: 99px;
+    background: linear-gradient(90deg,var(--teal),var(--teal-l));
+    color: var(--dark); font-family:'Syne',sans-serif; font-weight:700;
+    font-size: 1rem; cursor: pointer; border: none;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 24px rgba(0,137,123,.45);
+  }
+  .start-btn:hover { transform: scale(1.05); box-shadow: 0 6px 32px rgba(0,137,123,.65); }
+
+  /* ── TIMELINE ─────────────────────────────── */
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .tl-item { display: flex; gap: 18px; }
+  .tl-line { display: flex; flex-direction:column; align-items:center; }
+  .tl-dot  { width:14px; height:14px; border-radius:50%; background:var(--teal); flex-shrink:0; margin-top:5px; }
+  .tl-connector { width:2px; flex:1; background:rgba(0,137,123,.3); margin:4px 0; min-height:24px; }
+  .tl-body { padding-bottom: 20px; }
+  .tl-body h3 { font-size:.9rem; margin-bottom:4px; }
+  .tl-body p  { font-size:.85rem; color:#a8ccc9; margin-bottom:0; }
+
+  /* ── ACCORDION ────────────────────────────── */
+  .accordion { display:flex; flex-direction:column; gap:8px; }
+  .acc-item { border-radius:10px; overflow:hidden; border:1px solid rgba(0,137,123,.25); }
+  .acc-header {
+    padding: 15px 18px; cursor:pointer;
+    display:flex; justify-content:space-between; align-items:center;
+    background: var(--mid); font-family:'Syne',sans-serif; font-size:.93rem; font-weight:600;
+    transition: background .2s;
+  }
+  .acc-header:hover { background: rgba(0,137,123,.2); }
+  .acc-header .arrow { transition: transform .3s; }
+  .acc-item.open .arrow { transform: rotate(180deg); }
+  .acc-body { display:none; padding:14px 18px; background:rgba(0,137,123,.06); font-size:.88rem; color:#a8ccc9; line-height:1.6; }
+  .acc-item.open .acc-body { display:block; }
+
+  /* ── QUIZ ─────────────────────────────────── */
+  .quiz-wrap { max-width: 680px; }
+  .quiz-question { font-size: 1.05rem; font-weight:500; margin-bottom: 20px; color: var(--white); line-height:1.6; }
+  .quiz-options { display:flex; flex-direction:column; gap:10px; }
+  .quiz-option {
+    padding: 13px 18px; border-radius: 10px;
+    border: 1px solid rgba(0,137,123,.3);
+    background: var(--mid); cursor:pointer;
+    font-size: .92rem; color: #CFE8E6;
+    transition: border-color .2s, background .2s;
+  }
+  .quiz-option:hover:not(.disabled) { border-color:var(--teal); background:rgba(0,137,123,.15); }
+  .quiz-option.correct   { border-color: var(--ok); background:rgba(67,160,71,.2); color:#A5D6A7; }
+  .quiz-option.incorrect { border-color: var(--danger); background:rgba(229,57,53,.2); color:#EF9A9A; }
+  .quiz-feedback { margin-top:16px; font-size:.92rem; padding:12px 16px; border-radius:8px; display:none; }
+  .quiz-feedback.show { display:block; }
+  .quiz-feedback.correct-fb { background:rgba(67,160,71,.12); border:1px solid var(--ok); color:#A5D6A7; }
+  .quiz-feedback.incorrect-fb { background:rgba(229,57,53,.12); border:1px solid var(--danger); color:#EF9A9A; }
+  .next-q-btn {
+    margin-top:14px; display:none;
+    padding:10px 24px; border-radius:99px;
+    background:var(--teal); color:var(--dark);
+    font-family:'Syne',sans-serif; font-weight:700; font-size:.88rem;
+    border:none; cursor:pointer; transition: transform .2s;
+  }
+  .next-q-btn:hover { transform: scale(1.04); }
+  .next-q-btn.show  { display:inline-block; }
+
+  /* ── CHECKLIST TASK ───────────────────────── */
+  .task-card {
+    background: linear-gradient(135deg,rgba(255,109,0,.12),rgba(255,179,0,.08));
+    border: 1px solid var(--acc2); border-radius:16px; padding:26px;
+  }
+  .task-check { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
+  .task-check label {
+    display:flex; align-items:flex-start; gap:12px; cursor:pointer;
+    padding:10px 14px; border-radius:8px;
+    background: rgba(0,0,0,.15); font-size:.9rem; color:#CFE8E6;
+    transition: background .2s;
+  }
+  .task-check label:hover { background:rgba(255,179,0,.1); }
+  .task-check input[type=checkbox] { margin-top:3px; accent-color:var(--acc); width:16px; height:16px; flex-shrink:0; }
+  .task-check input:checked + span { color:var(--white); }
+
+  /* ── FLOW CHART ───────────────────────────── */
+  .flowchart { display:flex; align-items:center; flex-wrap:wrap; gap:0; justify-content:center; }
+  .flow-node {
+    padding:12px 18px; border-radius:10px; text-align:center;
+    font-size:.82rem; font-weight:600; font-family:'Syne',sans-serif;
+    min-width:110px;
+  }
+  .flow-arrow { font-size:1.4rem; color:var(--teal-l); padding:0 6px; }
+  .fn-blue   { background:rgba(0,137,123,.35); border:1px solid var(--teal); color:var(--white); }
+  .fn-acc    { background:rgba(255,179,0,.25); border:1px solid var(--acc); color:var(--acc); }
+  .fn-mid    { background:var(--mid); border:1px solid rgba(0,137,123,.3); color:#CFE8E6; }
+
+  /* ── ETHICS MATRIX ────────────────────────── */
+  .ethics-row { display:grid; grid-template-columns:120px 1fr; gap:14px; margin-bottom:14px; }
+  .ethics-label { font-family:'Syne',sans-serif; font-size:.78rem; font-weight:700; color:var(--gray); display:flex; align-items:center; }
+  .ethics-bar-wrap { display:flex; flex-direction:column; gap:6px; }
+  .ethics-pill {
+    padding:8px 14px; border-radius:8px; font-size:.82rem;
+    display:flex; align-items:center; gap:8px;
+  }
+
+  /* ── 3R VISUAL ────────────────────────────── */
+  .r3-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .r3-card { border-radius:14px; padding:22px; text-align:center; }
+  .r3-num  { font-family:'Syne',sans-serif; font-size:3.5rem; font-weight:800; line-height:1; margin-bottom:8px; }
+  .r3-1 { background:linear-gradient(135deg,rgba(0,137,123,.35),rgba(0,137,123,.1)); border:1px solid var(--teal); }
+  .r3-2 { background:linear-gradient(135deg,rgba(255,179,0,.25),rgba(255,179,0,.07)); border:1px solid var(--acc); }
+  .r3-3 { background:linear-gradient(135deg,rgba(255,109,0,.25),rgba(255,109,0,.07)); border:1px solid var(--acc2); }
+
+  /* ── 5F VISUAL ────────────────────────────── */
+  .f5-list { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .f5-item { display:flex; align-items:flex-start; gap:12px; padding:14px; border-radius:10px; background:var(--mid); border:1px solid rgba(0,137,123,.2); }
+  .f5-icon { font-size:1.8rem; }
+  .f5-text strong { display:block; font-size:.9rem; color:var(--white); margin-bottom:3px; }
+  .f5-text span   { font-size:.82rem; color:#a8ccc9; }
+
+  /* ── NAV BUTTONS ──────────────────────────── */
+  #nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 28px;
+    background: rgba(13,43,42,.95); backdrop-filter: blur(14px);
+    border-top: 1px solid rgba(0,137,123,.2);
+    z-index: 999;
+  }
+  .nav-btn {
+    padding: 10px 26px; border-radius: 99px;
+    font-family:'Syne',sans-serif; font-weight:700; font-size:.88rem;
+    cursor:pointer; border:none; transition: all .2s;
+  }
+  .btn-prev { background:var(--mid); color:var(--teal-l); border:1px solid var(--teal); }
+  .btn-prev:hover { background:var(--teal); color:var(--dark); }
+  .btn-next { background:var(--teal); color:var(--dark); }
+  .btn-next:hover { background:var(--teal-l); }
+  .btn-next:disabled { background:#2a4a48; color:var(--gray); cursor:not-allowed; }
+
+  .dot-nav { display:flex; gap:6px; align-items:center; flex-wrap:wrap; justify-content:center; max-width:60%; }
+  .dot {
+    width:8px; height:8px; border-radius:50%;
+    background: rgba(0,137,123,.3); cursor:pointer;
+    transition: background .25s, transform .25s;
+  }
+  .dot.active { background: var(--teal-l); transform: scale(1.35); }
+  .dot.visited { background: rgba(0,137,123,.6); }
+
+  /* ── SECTION DIVIDER ──────────────────────── */
+  .section-divider {
+    background: linear-gradient(135deg, rgba(0,137,123,.2) 0%, transparent 100%),
+                var(--mid);
+    border-left: 5px solid var(--teal);
+    border-radius: 0 16px 16px 0;
+    padding: 36px 40px; margin-bottom: 28px;
+  }
+  .section-divider h2 { color: var(--white); font-size: clamp(1.6rem,4vw,2.6rem); }
+  .section-divider p  { font-size: 1rem; color: var(--gray); margin-top: 8px; margin-bottom: 0; }
+
+  /* ── STAT CALLOUT ─────────────────────────── */
+  .stat-wrap { display:flex; gap:24px; flex-wrap:wrap; }
+  .stat-box { text-align:center; }
+  .stat-num { font-family:'Syne',sans-serif; font-size:3rem; font-weight:800; color:var(--teal-l); line-height:1; }
+  .stat-label { font-size:.8rem; color:var(--gray); margin-top:4px; }
+
+  /* ── SCROLLABLE CONTENT ───────────────────── */
+  .scroll-inner { max-height: 55vh; overflow-y: auto; padding-right: 8px; }
+  .scroll-inner::-webkit-scrollbar { width:5px; }
+  .scroll-inner::-webkit-scrollbar-thumb { background:var(--teal); border-radius:99px; }
+
+  /* ── CASE STUDY ───────────────────────────── */
+  .case-bubble {
+    background: rgba(0,137,123,.12); border:1px solid var(--teal);
+    border-radius: 16px 16px 16px 4px; padding: 20px 22px;
+    font-size: .92rem; color: #CFE8E6; line-height: 1.7;
+    margin-bottom: 18px; position: relative;
+  }
+  .case-bubble::before { content: '💬'; position:absolute; top:-12px; left:16px; font-size:1.4rem; }
+
+  /* ── HIGHLIGHT BOX ────────────────────────── */
+  .highlight-box {
+    background: linear-gradient(90deg,rgba(255,179,0,.15),rgba(255,179,0,.05));
+    border:1px solid var(--acc); border-radius:10px; padding:14px 18px;
+    margin:14px 0; font-size:.9rem; color:#FFE082;
+  }
+  .highlight-box strong { color:var(--acc); }
+
+  /* ── RESPONSIVE ───────────────────────────── */
+  @media(max-width:600px) {
+    .slide { padding: 36px 5vw 72px; }
+    .r3-grid,.f5-list { grid-template-columns:1fr; }
+    #nav { padding:12px 16px; }
+    .dot-nav { max-width:40%; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- TOP BAR -->
+<div id="topbar">
+  <div class="logo">Metodologi Penelitian</div>
+  <div class="dot-nav" id="dot-nav"></div>
+  <div class="timer-wrap">
+    <div class="timer-label">⏱ Sisa</div>
+    <div class="timer" id="timer">170:00</div>
+  </div>
+</div>
+
+<!-- SLIDES -->
+<div id="slides-wrap">
+
+<!-- ═══════════════════ SLIDE 1 — COVER ═══════════════════ -->
+<div class="slide cover active" id="slide-0">
+  <div class="cover-content">
+    <div class="slide-tag">Program Studi S1 Farmasi · FKIK Atma Jaya</div>
+    <h1>Pendahuluan<br>Metodologi<br>Penelitian</h1>
+    <p class="subtitle">apt. Dion Notario, M.Sc.</p>
+    <div class="pill-row">
+      <span class="badge badge-teal">170 Menit</span>
+      <span class="badge badge-acc">Interaktif</span>
+      <span class="badge badge-teal">Quiz & Studi Kasus</span>
+      <span class="badge badge-acc">Tugas Mandiri</span>
+    </div>
+    <p style="color:var(--gray);font-size:.88rem;max-width:480px;margin:0 auto;">
+      Modul ini mencakup konsep dasar penelitian, alur riset, kelaikan etik, prinsip 3R dan 5F dalam penelitian farmasi.
+    </p>
+    <button class="start-btn" onclick="goToSlide(1)">Mulai Belajar →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════ SLIDE 2 — AGENDA ═══════════════════ -->
+<div class="slide" id="slide-1">
+  <div class="slide-tag">Apa yang akan dipelajari</div>
+  <h2>Agenda Pembelajaran</h2>
+  <div class="grid-2">
+    <ul class="step-list">
+      <li><div class="step-num">1</div><div class="step-text"><strong>Apa itu Penelitian?</strong>Definisi, tujuan, dan alasan riset dilakukan</div></li>
+      <li><div class="step-num">2</div><div class="step-text"><strong>Belajar dari Paul Ehrlich</strong>Perjalanan riset seorang peraih Nobel</div></li>
+      <li><div class="step-num">3</div><div class="step-text"><strong>Alur & Siklus Penelitian</strong>Langkah sistematis menjalankan riset</div></li>
+      <li><div class="step-num">4</div><div class="step-text"><strong>Topik & Masalah Penelitian</strong>Cara memilih topik yang layak dan menarik</div></li>
+    </ul>
+    <ul class="step-list">
+      <li><div class="step-num">5</div><div class="step-text"><strong>Kelaikan Etik</strong>Protokol laik / tidak laik / sangat tidak laik etik</div></li>
+      <li><div class="step-num">6</div><div class="step-text"><strong>Subjek Rentan</strong>Identifikasi dan perlindungan khusus</div></li>
+      <li><div class="step-num">7</div><div class="step-text"><strong>Penelitian Hewan Coba</strong>Prinsip 3R dan 5F</div></li>
+      <li><div class="step-num">8</div><div class="step-text"><strong>Studi Kasus & Tugas</strong>Latihan aplikatif dan penugasan</div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════ SLIDE 3 — DEFINISI ═══════════════════ -->
+<div class="slide" id="slide-2">
+  <div class="slide-tag">Bagian 1 · Konsep Dasar</div>
+  <h2>Apa itu Penelitian?</h2>
+  <div class="grid-2-1">
+    <div>
+      <div class="quote-block">
+        "RE + SEARCH" — penyelidikan sistematis untuk mendapatkan pengetahuan baru dari fakta yang sudah ada.
+      </div>
+      <p>Penelitian adalah pemahaman ilmiah tentang pengetahuan yang ada <em>dan</em> upaya memperoleh pengetahuan baru yang dapat diterapkan untuk kemajuan umat manusia.</p>
+      <div class="grid-2" style="margin-top:18px;">
+        <div class="card card-accent">
+          <div class="card-icon">🔍</div>
+          <h3>Mencari Jawaban</h3>
+          <p>Merespons pertanyaan yang belum terjawab secara ilmiah</p>
+        </div>
+        <div class="card card-warn">
+          <div class="card-icon">💡</div>
+          <h3>Menemukan Solusi</h3>
+          <p>Memberikan jalan keluar atas permasalahan nyata di masyarakat</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="text-align:center;background:rgba(0,137,123,.08);">
+      <div style="font-size:4rem;margin-bottom:14px;">🧬</div>
+      <h3>Riset adalah sebuah perjalanan…</h3>
+      <p style="margin-top:8px;">Dimulai dari pertanyaan kecil, berujung pada temuan yang bisa mengubah dunia.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ SLIDE 4 — PAUL EHRLICH ═══════════════ -->
+<div class="slide" id="slide-3">
+  <div class="slide-tag">Bagian 1 · Inspirasi Riset</div>
+  <h2>Belajar dari Paul Ehrlich</h2>
+  <div class="grid-2">
+    <div>
+      <p class="lead">Nobel Prize 1908 · Bapak Imunologi & Kemoterapi Modern</p>
+      <p>Lahir 14 Maret 1854 di Silesia, Prusia. Menerima Nobel Prize in Physiology or Medicine tahun <strong>1908 bersama Élie Metchnikoff</strong> atas kontribusi mendasar mereka dalam mekanisme pertahanan imunologis tubuh — bukan atas penemuan Salvarsan.</p>
+      <div class="highlight-box">
+        <strong>⚠️ Koreksi Kronologi Penting:</strong> Salvarsan (obat sifilis pertama) baru diumumkan pada <strong>1909–1910</strong> — dua tahun <em>setelah</em> Ehrlich menerima Nobel. Nobel 1908-nya adalah murni atas riset imunologi dasar bersama Metchnikoff.
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-line"><div class="tl-dot" style="background:var(--teal)"></div><div class="tl-connector"></div></div>
+        <div class="tl-body"><h3>Fase I (1878–1890)</h3><p>Mengembangkan prinsip hematologi & imunologi modern — mendeskripsikan subset leukosit dan sel prekursornya.</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-line"><div class="tl-dot" style="background:var(--acc)"></div><div class="tl-connector"></div></div>
+        <div class="tl-body"><h3>Fase II</h3><p>Menemukan konsep reseptor spesifik sel — cikal bakal konsep ikatan ligan-reseptor dalam farmakologi.</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-line"><div class="tl-dot" style="background:var(--acc2)"></div></div>
+        <div class="tl-body"><h3>Fase III — Kemoterapi (1900–1910)</h3><p>Mentranslasikan temuan teoritis menjadi konsep terapeutik. Puncaknya adalah penemuan <strong>Salvarsan (1909–1910)</strong> — pengobatan pertama yang efektif untuk sifilis, dua tahun setelah Nobel 1908-nya.</p></div>
+      </div>
+    </div>
+  </div>
+  <p style="margin-top:20px;font-size:.82rem;color:var(--gray);">Sumber: ncbi.nlm.nih.gov/pmc/articles/PMC6738855/</p>
+</div>
+
+<!-- ═══════════════════ SLIDE 5 — ALUR PENELITIAN ═══════════ -->
+<div class="slide" id="slide-4">
+  <div class="slide-tag">Bagian 2 · Alur & Siklus</div>
+  <h2>Alur Penelitian</h2>
+  <div class="flowchart" style="margin-bottom:24px;">
+    <div class="flow-node fn-blue">Identifikasi<br>Masalah</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node fn-acc">Tinjauan<br>Pustaka</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node fn-mid">Rumusan<br>Masalah</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node fn-blue">Desain<br>Penelitian</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node fn-acc">Pengumpulan<br>Data</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node fn-mid">Analisis<br>Data</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node fn-blue">Interpretasi<br>& Publikasi</div>
+  </div>
+  <div class="highlight-box">
+    <strong>Ingat:</strong> Penelitian adalah <em>siklus</em> — temuan baru seringkali melahirkan pertanyaan baru yang memulai siklus berikutnya. ♻️
+  </div>
+  <div class="quote-block" style="margin-top:18px;">
+    "Perjalanan seribu mil dimulai dengan satu langkah" — identifikasi masalah adalah langkah pertama yang paling krusial.
+  </div>
+</div>
+
+<!-- ═══════════════════ SLIDE 6 — TOPIK PENELITIAN ══════════ -->
+<div class="slide" id="slide-5">
+  <div class="slide-tag">Bagian 3 · Menentukan Topik</div>
+  <h2>Bagaimana Memilih Topik Penelitian?</h2>
+  <p>Semua topik penelitian berawal dari suatu <strong>masalah penelitian</strong> — bisa berupa isu, kontroversi, kekhawatiran, atau kondisi yang memunculkan kebutuhan untuk diteliti.</p>
+  <div class="grid-2" style="margin-top:16px;">
+    <div>
+      <h3 style="margin-bottom:12px;">✅ Masalah layak diteliti jika…</h3>
+      <ul class="step-list">
+        <li><div class="step-num">✓</div><div class="step-text">Relevan dengan ilmu kefarmasian dan kontributif bagi perkembangan iptek</div></li>
+        <li><div class="step-num">✓</div><div class="step-text">Terkait isu terkini di masyarakat (hot topics)</div></li>
+        <li><div class="step-num">✓</div><div class="step-text">Dapat diuji secara ilmiah (testable)</div></li>
+        <li><div class="step-num">✓</div><div class="step-text">Memiliki dampak praktis di apotek, RS, atau industri farmasi</div></li>
+        <li><div class="step-num">✓</div><div class="step-text">Mengisi research gap dari penelitian sebelumnya</div></li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="margin-bottom:12px;">⚠️ Pertimbangan Praktis (Non-Keilmuan)</h3>
+      <div class="card card-warn" style="margin-bottom:10px;">
+        <p>👥 <strong>Akses partisipan</strong> — mudah/sulit dijangkau?</p>
+      </div>
+      <div class="card card-warn" style="margin-bottom:10px;">
+        <p>⏰ <strong>Waktu</strong> — skripsi ≈ 4 bulan efektif</p>
+      </div>
+      <div class="card card-warn" style="margin-bottom:10px;">
+        <p>💰 <strong>Dana penelitian</strong> — realistis?</p>
+      </div>
+      <div class="card card-warn" style="margin-bottom:10px;">
+        <p>🧪 <strong>Kemampuan teknis</strong> — dikuasai?</p>
+      </div>
+      <div class="card card-danger">
+        <p>⚖️ <strong>Kelayakan etik</strong> — harus dipenuhi!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ SLIDE 7 — LANGKAH TOPIK ════════════ -->
+<div class="slide" id="slide-6">
+  <div class="slide-tag">Bagian 3 · Langkah Praktis</div>
+  <h2>Langkah-Langkah Praktis Menentukan Topik</h2>
+  <div class="grid-3">
+    <div class="card card-accent">
+      <div class="card-icon">🔎</div>
+      <h3>1. Identifikasi Topik Menarik</h3>
+      <p>Baca jurnal ilmiah, surat kabar, media sosial. Amati fenomena di lingkungan sekitar.</p>
+    </div>
+    <div class="card card-warn">
+      <div class="card-icon">📚</div>
+      <h3>2. Telaah Pustaka</h3>
+      <p>Periksa apakah topik sudah pernah diteliti. Temukan <em>research gap</em> yang belum dijawab.</p>
+    </div>
+    <div class="card card-ok">
+      <div class="card-icon">🤝</div>
+      <h3>3. Konsultasi Ahli</h3>
+      <p>Diskusikan temuan Anda dengan dosen/pakar untuk mendapat masukan bermakna.</p>
+    </div>
+  </div>
+  <div style="margin-top:22px;text-align:center;">
+    <div class="flowchart">
+      <div class="flow-node fn-blue">Layak<br>Diteliti</div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-node fn-acc">Layak<br>Etik</div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-node fn-mid">Mampu<br>Diteliti</div>
+      <div class="flow-arrow">=</div>
+      <div class="flow-node" style="background:linear-gradient(135deg,var(--teal),var(--teal-l));color:var(--dark);font-weight:800;">TOPIK<br>IDEAL ✓</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ SLIDE 8 — KELAIKAN ETIK ════════════ -->
+<div class="slide" id="slide-7">
+  <div class="slide-tag">Bagian 4 · Etika Penelitian</div>
+  <h2>Wawasan Kelaikan Etik</h2>
+  <p>Setiap penelitian yang melibatkan manusia atau hewan <strong>wajib</strong> mendapatkan persetujuan dari Komite Etik Penelitian Kesehatan (KEPK).</p>
+  <div class="accordion" id="acc-ethics">
+    <div class="acc-item open">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <span>✅ Protokol LAIK ETIK (LE)</span>
+        <span class="arrow">▾</span>
+      </div>
+      <div class="acc-body">
+        <ul style="padding-left:18px;display:flex;flex-direction:column;gap:6px;">
+          <li>Ada <strong>Persetujuan Setelah Penjelasan (PSP / Informed Consent)</strong></li>
+          <li>Ada penggantian biaya transportasi & kehilangan waktu kerja</li>
+          <li>Ada kerahasiaan & pertimbangan privasi subjek</li>
+          <li>Mempunyai nilai sosial, klinik, dan ilmiah</li>
+          <li>Ada pemerataan beban dan manfaat yang jelas</li>
+          <li>Manfaat <strong>lebih besar</strong> dari risiko</li>
+          <li><em>Contoh: pengembangan obat/vaksin baru, pengembangan IPTEK Kesehatan</em></li>
+        </ul>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <span>⚠️ Protokol TIDAK LAIK ETIK (TE) — 3 Kategori</span>
+        <span class="arrow">▾</span>
+      </div>
+      <div class="acc-body">
+        <p><strong>TE-1:</strong> Tidak ada PSP, tidak ada penggantian biaya, tidak mempertimbangkan privasi, manfaat &lt; risiko. <br><em>Contoh: Eksperimen Nazi (Mengele), Skandal Tuskegee.</em></p>
+        <p style="margin-top:8px;"><strong>TE-2:</strong> Ada PSP & penggantian biaya, ada nilai sosial/klinik, tetapi <em>tidak ada nilai ilmiah</em> dan tidak ada pertimbangan manfaat-risiko. <br><em>Contoh: Penelitian hanya untuk mengejar angka kredit/kum.</em></p>
+        <p style="margin-top:8px;"><strong>TE-3:</strong> Tidak ada nilai sosial/klinik; nilai ilmiah ada tapi manfaat-risiko subjek diabaikan.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <span>🚫 Protokol SANGAT TIDAK LAIK ETIK (STE)</span>
+        <span class="arrow">▾</span>
+      </div>
+      <div class="acc-body">
+        <p>Tidak ada PSP, tidak ada nilai sosial/klinik, tidak ada nilai ilmiah, tidak ada pertimbangan pemerataan beban-manfaat, tidak mempertimbangkan manfaat dan risiko subjek sama sekali.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ SLIDE 9 — SUBJEK RENTAN ════════════ -->
+<div class="slide" id="slide-8">
+  <div class="slide-tag">Bagian 4 · Subjek Penelitian</div>
+  <h2>Subjek Rentan dalam Penelitian</h2>
+  <div class="grid-2">
+    <div>
+      <p><strong>Subjek rentan</strong> adalah individu yang memiliki kapasitas terbatas dalam menyetujui atau menolak partisipasi penelitian secara bebas.</p>
+      <div class="card card-danger" style="margin-top:14px;">
+        <h3>Siapa saja subjek rentan?</h3>
+        <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="badge badge-danger">Mahasiswa/Bawahan</span>
+          <span class="badge badge-danger">Penghuni panti jompo</span>
+          <span class="badge badge-danger">Penghuni LP/RS Jiwa</span>
+          <span class="badge badge-danger">Penerima bantuan sosial</span>
+          <span class="badge badge-danger">Tunawisma/Pengungsi</span>
+          <span class="badge badge-danger">Penyandang disabilitas</span>
+          <span class="badge badge-danger">Anak di bawah umur</span>
+          <span class="badge badge-danger">Orang dengan penyakit tak tersembuhkan</span>
+        </div>
+      </div>
+      <div class="highlight-box" style="margin-top:14px;">
+        <strong>Catatan:</strong> Wanita hamil <em>tidak</em> otomatis rentan hanya karena kehamilannya — tetapi kondisi khusus seperti risiko pada janin mungkin memerlukan perlindungan tambahan.
+      </div>
+    </div>
+    <div>
+      <h3 style="margin-bottom:14px;">🛡️ Perlindungan Khusus</h3>
+      <ul class="step-list">
+        <li><div class="step-num">1</div><div class="step-text"><strong>Risiko Minimal</strong>Tidak lebih dari risiko minimal untuk prosedur yang tidak menawarkan manfaat langsung bagi partisipan</div></li>
+        <li><div class="step-num">2</div><div class="step-text"><strong>Persetujuan Tambahan</strong>Lengkapi dengan izin dari keluarga, wali sah, atau perwakilan yang sesuai</div></li>
+        <li><div class="step-num">3</div><div class="step-text"><strong>Targeting</strong>Penelitian hanya boleh dilakukan jika ditargetkan pada kondisi yang memang memengaruhi kelompok tersebut</div></li>
+      </ul>
+      <div class="card card-accent" style="margin-top:14px;">
+        <p>📋 <strong>Penting:</strong> Penelitian observasional menggunakan rekam medik pun tetap memerlukan ethical clearance dari KEPK!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ SLIDE 10 — HEWAN COBA ══════════════ -->
+<div class="slide" id="slide-9">
+  <div class="slide-tag">Bagian 5 · Hewan Coba</div>
+  <h2>Penelitian Menggunakan Hewan Coba</h2>
+  <p>Penggunaan hewan dalam penelitian farmasi <strong>diperbolehkan</strong> apabila memenuhi tiga kondisi berikut:</p>
+  <div class="grid-3" style="margin-top:16px;">
+    <div class="card card-accent">
+      <div class="card-icon">🏥</div>
+      <h3>Relevan & Bermanfaat</h3>
+      <p>Penelitian relevan untuk kesehatan manusia/hewan dan dapat memajukan ilmu pengetahuan</p>
+    </div>
+    <div class="card card-warn">
+      <div class="card-icon">🔬</div>
+      <h3>Tiada Alternatif</h3>
+      <p>Belum tersedia model in vitro yang memadai (mis. regulasi hormonal, perjalanan penyakit, penelitian otak/usus)</p>
+    </div>
+    <div class="card card-ok">
+      <div class="card-icon">🚫</div>
+      <h3>Non-Duplikasi</h3>
+      <p>Tidak menduplikasi penelitian sebelumnya karena heterogenitas biologis atau metode tidak standar</p>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-top:20px;">
+    <strong>⚠️ Wajib:</strong> Semua penelitian menggunakan hewan harus menerapkan prinsip <strong>Kesejahteraan Hewan</strong> dan mendapatkan persetujuan dari <strong>IACUC</strong> (Institutional Animal Care and Use Committee). Kewajiban pembentukan IACUC pertama kali ditetapkan melalui amandemen AWA pada <strong>1985</strong> (<em>Food Security Act / Improved Standards for Laboratory Animals Act</em>), sementara istilah "IACUC" secara resmi diperkenalkan pada <strong>1986</strong>.
+  </div>
+</div>
+
+<!-- ═══════════════════ SLIDE 11 — PRINSIP 3R ══════════════ -->
+<div class="slide" id="slide-10">
+  <div class="slide-tag">Bagian 5 · Kesejahteraan Hewan</div>
+  <h2>Prinsip 3R dalam Penelitian Hewan</h2>
+  <p style="margin-bottom:8px;">Ditetapkan oleh Russell &amp; Burch dalam <em>"The Principles of <strong>Humane</strong> Experimental Technique"</em> (1959) — diterima secara internasional dan telah menjadi undang-undang di banyak negara.</p>
+  <div class="highlight-box" style="margin-bottom:18px;">
+    <strong>⚠️ Hierarki Prioritas:</strong> Russell &amp; Burch menetapkan urutan yang jelas — <strong>Replacement harus diupayakan terlebih dahulu</strong>, baru kemudian Reduction, lalu Refinement. Peneliti wajib membuktikan bahwa Replacement tidak memungkinkan sebelum menggunakan hewan.
+  </div>
+  <div class="r3-grid">
+    <div class="r3-card r3-1">
+      <div class="r3-num" style="color:var(--teal-l);">R1</div>
+      <h3>Replacement <span style="font-size:.7rem;font-weight:400;color:var(--teal-l);">— Prioritas Utama</span></h3>
+      <p style="font-size:.85rem;color:#a8ccc9;margin-top:8px;">Menghindari penggunaan hewan dengan menggantinya menggunakan alternatif: sel/organisme lebih rendah, model in silico (komputer), QSAR, simulasi, atau sukarelawan manusia.</p>
+    </div>
+    <div class="r3-card r3-2">
+      <div class="r3-num" style="color:var(--acc);">R2</div>
+      <h3>Reduction <span style="font-size:.7rem;font-weight:400;color:var(--acc);">— Jika Hewan Tak Tergantikan</span></h3>
+      <p style="font-size:.85rem;color:#a8ccc9;margin-top:8px;">Meminimalkan jumlah hewan yang digunakan melalui perhitungan statistik (power analysis), desain cermat, dan penggunaan kelompok kontrol yang efisien.</p>
+    </div>
+    <div class="r3-card r3-3">
+      <div class="r3-num" style="color:var(--acc2);">R3</div>
+      <h3>Refinement <span style="font-size:.7rem;font-weight:400;color:var(--acc2);">— Sepanjang Penelitian</span></h3>
+      <p style="font-size:.85rem;color:#a8ccc9;margin-top:8px;">Meminimalkan rasa sakit dan distress hewan dengan modifikasi teknik, manajemen nyeri (anestesia/analgesia), dan habituasi prosedur.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ SLIDE 12 — PRINSIP 5F ══════════════ -->
+<div class="slide" id="slide-11">
+  <div class="slide-tag">Bagian 5 · Kesejahteraan Hewan</div>
+  <h2>Prinsip 5F (Five Freedoms)</h2>
+  <div class="timeline" style="margin-bottom:18px;">
+    <div class="tl-item">
+      <div class="tl-line"><div class="tl-dot" style="background:var(--gray)"></div><div class="tl-connector"></div></div>
+      <div class="tl-body"><h3>Brambell Report · 1965</h3><p>Penyelidikan parlemen Inggris tentang kesejahteraan hewan di peternakan intensif melahirkan konsep awal lima kebebasan hewan. Ini adalah titik asal Five Freedoms.</p></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-line"><div class="tl-dot" style="background:var(--teal-l)"></div></div>
+      <div class="tl-body"><h3>Farm Animal Welfare Council (FAWC) · 5 Desember 1979</h3><p>FAWC mengkodifikasi dan memperluas konsep Brambell menjadi <strong>Five Freedoms</strong> formal yang mencakup kebutuhan fisik dan mental hewan — inilah versi yang digunakan secara internasional hingga kini.</p></div>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-bottom:16px;">
+    <strong>📌 Catatan Perkembangan:</strong> Five Freedoms kini dianggap sebagai fondasi historis. Framework yang lebih komprehensif seperti <strong>Five Domains Model</strong> (Mellor, 2016) telah dikembangkan untuk mencakup aspek emosional dan kualitas hidup hewan secara lebih menyeluruh.
+  </div>
+  <div class="f5-list">
+    <div class="f5-item">
+      <div class="f5-icon">🍽️</div>
+      <div class="f5-text"><strong>Freedom 1 — Bebas dari Lapar & Haus</strong><span>Kemudahan akses makanan dan minuman sesuai kebutuhan</span></div>
+    </div>
+    <div class="f5-item">
+      <div class="f5-icon">🏠</div>
+      <div class="f5-text"><strong>Freedom 2 — Bebas dari Panas & Ketidaknyamanan</strong><span>Naungan yang nyaman untuk beristirahat</span></div>
+    </div>
+    <div class="f5-item">
+      <div class="f5-icon">💊</div>
+      <div class="f5-text"><strong>Freedom 3 — Bebas dari Nyeri, Trauma & Penyakit</strong><span>Pencegahan dan pengobatan yang sesuai</span></div>
+    </div>
+    <div class="f5-item">
+      <div class="f5-icon">😌</div>
+      <div class="f5-text"><strong>Freedom 4 — Bebas dari Rasa Takut & Stres</strong><span>Mencegah penderitaan seminimal mungkin</span></div>
+    </div>
+    <div class="f5-item" style="grid-column:1/-1;">
+      <div class="f5-icon">🐭</div>
+      <div class="f5-text"><strong>Freedom 5 — Bebas Mengekspresikan Tingkah Laku Alami</strong><span>Ruang gerak dan fasilitas sesuai kebutuhan spesies hewan</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ SLIDE 13 — QUIZ 1 ══════════════════ -->
+<div class="slide" id="slide-12">
+  <div class="slide-tag">🧠 Latihan Soal · Quiz 1</div>
+  <h2>Uji Pemahaman</h2>
+  <div class="quiz-wrap" id="quiz1">
+    <div id="q1-container">
+      <p class="quiz-question" id="q1-text"></p>
+      <div class="quiz-options" id="q1-opts"></div>
+      <div class="quiz-feedback" id="q1-fb"></div>
+      <button class="next-q-btn" id="q1-next" onclick="nextQuestion()">Soal Berikutnya →</button>
+    </div>
+    <div id="quiz-score" style="display:none;text-align:center;padding:30px 0;">
+      <div style="font-size:3rem;">🎉</div>
+      <h3 style="font-size:1.5rem;color:var(--teal-l);margin:12px 0;">Selesai!</h3>
+      <p>Skor kamu: <strong id="score-val" style="color:var(--acc);font-size:1.4rem;"></strong></p>
+      <button class="next-q-btn show" onclick="restartQuiz()" style="margin-top:12px;">Ulangi Quiz 🔁</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ SLIDE 14 — STUDI KASUS ════════════ -->
+<div class="slide" id="slide-13">
+  <div class="slide-tag">🔬 Studi Kasus</div>
+  <h2>Analisis Kelayakan Masalah Penelitian</h2>
+  <div class="case-bubble">
+    Seorang mahasiswa menemukan bahwa kasus obesitas pada anak-anak usia SD-SMP di suatu daerah cukup mengkhawatirkan. Ia membaca artikel yang menyatakan konsumsi <strong>teh hijau</strong> mampu menurunkan berat badan, tetapi belum ada bukti yang cukup kuat. Ia merumuskan masalah: <em>"Kasus obesitas di daerah X pada siswa SD-SMP saat ini mengkhawatirkan (75%). Konsumsi teh hijau diduga mampu menurunkan berat badan apabila dikonsumsi setiap hari. Masalahnya adalah belum ada bukti ilmiah mengenai klaim efektivitas teh hijau dalam menurunkan berat badan."</em>
+  </div>
+  <p style="margin-bottom:14px;font-weight:600;">❓ Apakah masalah ini layak diteliti? Analisis berdasarkan kriteria berikut:</p>
+  <div class="grid-2">
+    <div class="accordion">
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)"><span>📌 Relevansi & Kontribusi Iptek</span><span class="arrow">▾</span></div>
+        <div class="acc-body"><span class="badge badge-ok">✅ LAYAK</span> — Obesitas pada anak adalah isu kesehatan nyata. Teh hijau termasuk dalam domain farmakognosi dan farmakologi. Berpotensi memberikan bukti ilmiah baru tentang fitofarmaka.</div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)"><span>🌡️ Isu Terkini di Masyarakat</span><span class="arrow">▾</span></div>
+        <div class="acc-body"><span class="badge badge-ok">✅ LAYAK</span> — Obesitas anak merupakan masalah kesehatan global yang aktif dibahas. Penggunaan bahan alam untuk terapi menjadi tren yang relevan.</div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)"><span>🧪 Dapat Diuji Secara Ilmiah</span><span class="arrow">▾</span></div>
+        <div class="acc-body"><span class="badge badge-ok">✅ LAYAK</span> — Hipotesis dapat diuji melalui uji klinis, studi observasional, atau penelitian eksperimental dengan pengukuran BMI.</div>
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)"><span>💼 Dampak Praktis Kefarmasian</span><span class="arrow">▾</span></div>
+        <div class="acc-body"><span class="badge badge-ok">✅ LAYAK</span> — Temuan dapat mendukung rekomendasi apoteker dalam konseling penggunaan suplemen herbal berbasis bukti.</div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)"><span>🔍 Research Gap</span><span class="arrow">▾</span></div>
+        <div class="acc-body"><span class="badge badge-ok">✅ LAYAK</span> — Pernyataan masalah secara eksplisit menyebutkan belum ada bukti ilmiah yang cukup kuat → terdapat research gap yang jelas.</div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)"><span>⚖️ Kelayakan Etik</span><span class="arrow">▾</span></div>
+        <div class="acc-body"><span class="badge badge-acc">⚠️ PERLU DIPERTIMBANGKAN</span> — Subjek anak-anak adalah subjek rentan. Harus ada PSP dari orang tua/wali, risiko minimal, dan persetujuan KEPK.</div>
+      </div>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-top:16px;">
+    <strong>Kesimpulan:</strong> Masalah ini layak diteliti, dengan syarat memenuhi kaidah etik penelitian yang ketat — terutama karena subjek adalah anak-anak (kelompok rentan).
+  </div>
+</div>
+
+<!-- ═══════════════════ SLIDE 15 — TUGAS ═══════════════════ -->
+<div class="slide" id="slide-14">
+  <div class="slide-tag">📝 Penugasan</div>
+  <h2>Tugas Individu</h2>
+  <div class="task-card">
+    <h3 style="color:var(--acc);margin-bottom:8px;">Deskripsi Tugas</h3>
+    <p>Pilih <strong>satu topik penelitian di bidang farmasi</strong> yang akan digunakan sebagai topik simulasi sepanjang semester ini!</p>
+    <div class="task-check">
+      <label><input type="checkbox" onchange="updateChecklist()"><span>🔍 Identifikasi minimal 3 topik farmasi menarik dari jurnal/surat kabar/media sosial</span></label>
+      <label><input type="checkbox" onchange="updateChecklist()"><span>📊 Analisis kelayakan masing-masing topik (relevansi, isu terkini, testable, dampak praktis, research gap)</span></label>
+      <label><input type="checkbox" onchange="updateChecklist()"><span>⚖️ Evaluasi kelayakan etik dari setiap topik</span></label>
+      <label><input type="checkbox" onchange="updateChecklist()"><span>⚙️ Pertimbangkan faktor praktis: waktu (4 bulan), dana, kemampuan teknis, akses subjek</span></label>
+      <label><input type="checkbox" onchange="updateChecklist()"><span>✅ Pilih SATU topik terbaik dan jelaskan alasan pemilihannya</span></label>
+    </div>
+    <div id="task-progress" style="margin-top:16px;font-size:.85rem;color:var(--teal-l);"></div>
+  </div>
+  <div class="card card-warn" style="margin-top:18px;">
+    <h3>⚠️ Catatan Penting!</h3>
+    <p style="margin-top:6px;">Topik yang dipilih akan digunakan untuk penugasan berikutnya: <span class="badge badge-teal">Latar Belakang</span> <span class="badge badge-acc">Tinjauan Pustaka</span> <span class="badge badge-teal">Desain Penelitian</span> <span class="badge badge-acc">Analisis Data</span></p>
+    <p style="margin-top:8px;">Topik ini hanya untuk <strong>simulasi</strong> pembelajaran — bukan untuk penelitian skripsi atau PKM.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════ SLIDE 16 — RANGKUMAN ════════════════ -->
+<div class="slide" id="slide-15">
+  <div class="slide-tag">🏁 Penutup</div>
+  <h2>Rangkuman Materi</h2>
+  <div class="grid-2">
+    <div>
+      <ul class="step-list">
+        <li><div class="step-num">1</div><div class="step-text"><strong>Penelitian</strong> adalah penyelidikan sistematis untuk pengetahuan baru yang berguna bagi kemajuan umat manusia</div></li>
+        <li><div class="step-num">2</div><div class="step-text"><strong>Topik penelitian</strong> yang baik harus memenuhi kriteria: layak diteliti, layak etik, dan mampu diteliti</div></li>
+        <li><div class="step-num">3</div><div class="step-text"><strong>Kelaikan etik</strong> dinilai berdasarkan PSP, nilai sosial/klinik/ilmiah, keseimbangan manfaat-risiko</div></li>
+        <li><div class="step-num">4</div><div class="step-text"><strong>Subjek rentan</strong> memerlukan perlindungan khusus dan mekanisme persetujuan tambahan</div></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="step-list">
+        <li><div class="step-num">5</div><div class="step-text"><strong>Ethical clearance</strong> dari KEPK wajib diperoleh untuk semua penelitian melibatkan manusia, termasuk studi rekam medik</div></li>
+        <li><div class="step-num">6</div><div class="step-text"><strong>Hewan coba</strong> boleh digunakan jika relevan, tidak ada alternatif, dan tidak menduplikasi penelitian sebelumnya</div></li>
+        <li><div class="step-num">7</div><div class="step-text"><strong>Prinsip 3R</strong> (Replacement, Reduction, Refinement) dan <strong>5F</strong> (Five Freedoms) wajib diterapkan dalam penelitian hewan</div></li>
+        <li><div class="step-num">8</div><div class="step-text"><strong>IACUC</strong> berperan mengawasi kepatuhan kaidah kesejahteraan hewan di institusi penelitian</div></li>
+      </ul>
+    </div>
+  </div>
+  <div class="quote-block" style="margin-top:22px;">
+    "Penelitian bukan hanya tentang menemukan jawaban — ini tentang bertanya dengan cara yang benar, dengan integritas, dan dengan menghormati semua pihak yang terlibat." 🔬
+  </div>
+</div>
+
+<!-- ═══════════════════ SLIDE 17 — UJIAN AKHIR ══════════════ -->
+<div class="slide" id="slide-16">
+  <div class="slide-tag">📋 Ujian Akhir Modul</div>
+  <h2>Soal Pilihan Ganda</h2>
+  <p style="color:var(--gray);margin-bottom:20px;">Kerjakan 10 soal berikut. Setiap soal hanya bisa dijawab sekali. Setelah selesai, Anda akan mendapatkan sertifikat.</p>
+
+  <!-- Name input screen -->
+  <div id="exam-name-screen">
+    <div class="card card-accent" style="max-width:480px;">
+      <div class="card-icon">🎓</div>
+      <h3 style="margin-bottom:14px;">Masukkan Nama Anda</h3>
+      <input
+        type="text" id="student-name-input"
+        placeholder="Nama lengkap sesuai KTM…"
+        style="width:100%;padding:12px 16px;border-radius:10px;border:1px solid var(--teal);
+               background:rgba(0,0,0,.25);color:var(--white);font-size:.95rem;font-family:'DM Sans',sans-serif;
+               outline:none;margin-bottom:14px;"
+        onkeydown="if(event.key==='Enter') startExam()"
+      />
+      <button class="start-btn" style="margin-top:0;padding:12px 28px;font-size:.9rem;" onclick="startExam()">
+        Mulai Ujian →
+      </button>
+      <p id="exam-name-err" style="color:var(--danger);font-size:.82rem;margin-top:8px;display:none;">
+        ⚠️ Nama tidak boleh kosong!
+      </p>
+    </div>
+  </div>
+
+  <!-- Exam questions screen -->
+  <div id="exam-screen" style="display:none;max-width:720px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
+      <div id="exam-progress-label" style="font-size:.88rem;color:var(--gray);">Soal 1 dari 10</div>
+      <div id="exam-score-live" style="font-size:.88rem;color:var(--teal-l);">Skor: 0</div>
+    </div>
+    <!-- progress bar soal -->
+    <div style="height:5px;background:rgba(0,137,123,.2);border-radius:99px;margin-bottom:22px;overflow:hidden;">
+      <div id="exam-progress-bar" style="height:100%;background:linear-gradient(90deg,var(--teal),var(--teal-l));width:10%;transition:width .4s;"></div>
+    </div>
+    <p class="quiz-question" id="exam-q-text" style="font-size:1rem;margin-bottom:18px;"></p>
+    <div class="quiz-options" id="exam-opts"></div>
+    <div class="quiz-feedback" id="exam-fb"></div>
+    <button class="next-q-btn" id="exam-next-btn" onclick="examNextQuestion()">Soal Berikutnya →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════ SLIDE 18 — SERTIFIKAT ═══════════════ -->
+<div class="slide" id="slide-17" style="align-items:center;text-align:center;background:radial-gradient(ellipse at 50% 30%,rgba(0,137,123,.25) 0%,transparent 70%),var(--dark);">
+  <div id="cert-screen" style="max-width:700px;width:100%;">
+    <div class="slide-tag" style="text-align:center;">🎉 Ujian Selesai!</div>
+    <h2 style="margin-bottom:6px;">Hasil Ujian Anda</h2>
+    <p id="cert-score-text" style="font-size:1.1rem;color:var(--gray);margin-bottom:28px;"></p>
+
+    <!-- Certificate Preview -->
+    <div id="certificate-box" style="
+      background: linear-gradient(145deg, #0a2624, #112e2c);
+      border: 2px solid var(--teal);
+      border-radius: 20px;
+      padding: 40px 44px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 48px rgba(0,137,123,.35);
+      text-align: center;
+      margin-bottom: 24px;
+    ">
+      <!-- decorative corners -->
+      <div style="position:absolute;top:12px;left:12px;width:40px;height:40px;border-top:3px solid var(--acc);border-left:3px solid var(--acc);border-radius:4px 0 0 0;"></div>
+      <div style="position:absolute;top:12px;right:12px;width:40px;height:40px;border-top:3px solid var(--acc);border-right:3px solid var(--acc);border-radius:0 4px 0 0;"></div>
+      <div style="position:absolute;bottom:12px;left:12px;width:40px;height:40px;border-bottom:3px solid var(--acc);border-left:3px solid var(--acc);border-radius:0 0 0 4px;"></div>
+      <div style="position:absolute;bottom:12px;right:12px;width:40px;height:40px;border-bottom:3px solid var(--acc);border-right:3px solid var(--acc);border-radius:0 0 4px 0;"></div>
+
+      <div style="font-size:2.8rem;margin-bottom:8px;">🏅</div>
+      <p style="font-size:.72rem;letter-spacing:4px;text-transform:uppercase;color:var(--teal-l);margin-bottom:6px;">Universitas Katolik Indonesia Atma Jaya</p>
+      <p style="font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-bottom:22px;">Program Studi S1 Farmasi · FKIK</p>
+
+      <p style="font-size:.78rem;color:var(--gray);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">Sertifikat Penyelesaian Modul</p>
+      <h2 style="font-family:'Syne',sans-serif;font-size:clamp(1.1rem,3vw,1.6rem);color:var(--white);margin-bottom:22px;font-weight:800;line-height:1.2;">
+        Pendahuluan Metodologi Penelitian
+      </h2>
+
+      <p style="font-size:.8rem;color:var(--gray);margin-bottom:8px;">Diberikan kepada:</p>
+      <p id="cert-name-display" style="font-family:'Syne',sans-serif;font-size:clamp(1.3rem,4vw,2rem);color:var(--acc);font-weight:700;margin-bottom:24px;border-bottom:1px solid rgba(255,179,0,.3);padding-bottom:18px;"></p>
+
+      <div style="display:flex;justify-content:center;gap:48px;flex-wrap:wrap;margin-bottom:22px;">
+        <div>
+          <div id="cert-score-big" style="font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;color:var(--teal-l);line-height:1;"></div>
+          <div style="font-size:.72rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Skor</div>
+        </div>
+        <div>
+          <div id="cert-grade" style="font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;line-height:1;"></div>
+          <div style="font-size:.72rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Predikat</div>
+        </div>
+        <div>
+          <div id="cert-date" style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--white);line-height:1;margin-top:8px;"></div>
+          <div style="font-size:.72rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Tanggal</div>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid rgba(0,137,123,.3);padding-top:16px;">
+        <p style="font-size:.72rem;color:var(--gray);">apt. Dion Notario, M.Sc. · Dosen Pengampu</p>
+        <p style="font-size:.68rem;color:rgba(144,164,174,.6);margin-top:4px;">Modul Interaktif Metodologi Penelitian — Pendahuluan</p>
+      </div>
+    </div>
+
+    <!-- Download button -->
+    <button onclick="downloadCertificate()" style="
+      padding:14px 36px;border-radius:99px;
+      background:linear-gradient(90deg,var(--acc),var(--acc2));
+      color:var(--dark);font-family:'Syne',sans-serif;font-weight:800;
+      font-size:.95rem;border:none;cursor:pointer;
+      box-shadow:0 4px 24px rgba(255,179,0,.4);
+      transition:transform .2s,box-shadow .2s;
+      margin-right:12px;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+      ⬇ Unduh Sertifikat (PDF)
+    </button>
+    <button onclick="retakeExam()" style="
+      padding:14px 28px;border-radius:99px;
+      background:transparent;border:1px solid var(--teal);
+      color:var(--teal-l);font-family:'Syne',sans-serif;font-weight:700;
+      font-size:.88rem;cursor:pointer;transition:background .2s;
+    " onmouseover="this.style.background='rgba(0,137,123,.15)'" onmouseout="this.style.background='transparent'">
+      🔁 Ulangi Ujian
+    </button>
+  </div>
+</div>
+
+</div><!-- end slides-wrap -->
+
+<!-- NAV -->
+<div id="nav">
+  <button class="nav-btn btn-prev" onclick="prevSlide()">← Sebelumnya</button>
+  <div class="dot-nav" id="dot-nav-bot"></div>
+  <button class="nav-btn btn-next" onclick="nextSlide()">Selanjutnya →</button>
+</div>
+
+<script>
+// ── STATE ────────────────────────────────────────────────────
+const TOTAL = 18;
+let current = 0;
+let visited = new Set([0]);
+
+// ── TIMER ────────────────────────────────────────────────────
+let secs = 170 * 60;
+function formatTime(s) {
+  const m = Math.floor(s/60).toString().padStart(2,'0');
+  const sec = (s%60).toString().padStart(2,'0');
+  return m + ':' + sec;
+}
+const timerEl = document.getElementById('timer');
+setInterval(() => {
+  if (secs > 0) secs--;
+  timerEl.textContent = formatTime(secs);
+  if (secs <= 600) timerEl.style.color = 'var(--danger)';
+}, 1000);
+
+// ── DOTS ─────────────────────────────────────────────────────
+function buildDots() {
+  ['dot-nav','dot-nav-bot'].forEach(id => {
+    const wrap = document.getElementById(id);
+    wrap.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i===current?' active':'') + (visited.has(i)&&i!==current?' visited':'');
+      d.onclick = () => goToSlide(i);
+      d.title = 'Slide ' + (i+1);
+      wrap.appendChild(d);
+    }
+  });
+}
+
+// ── PROGRESS BAR ─────────────────────────────────────────────
+function updateProgress() {
+  const pct = ((current+1)/TOTAL)*100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+
+// ── COUNTER ──────────────────────────────────────────────────
+function updateCounter() {
+  document.querySelector('#topbar .slide-counter') && 
+    (document.querySelector('#topbar .slide-counter').textContent = (current+1) + ' / ' + TOTAL);
+}
+
+// ── GO TO SLIDE ───────────────────────────────────────────────
+function goToSlide(n) {
+  document.getElementById('slide-'+current).classList.remove('active');
+  current = n;
+  visited.add(n);
+  const s = document.getElementById('slide-'+current);
+  s.classList.add('active');
+  // reset animation
+  s.style.animation = 'none';
+  s.offsetHeight;
+  s.style.animation = '';
+  buildDots();
+  updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function nextSlide() { if (current < TOTAL-1) goToSlide(current+1); }
+function prevSlide() { if (current > 0) goToSlide(current-1); }
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextSlide();
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevSlide();
+});
+
+// ── ACCORDION ────────────────────────────────────────────────
+function toggleAcc(header) {
+  const item = header.parentElement;
+  item.classList.toggle('open');
+}
+
+// ── QUIZ ─────────────────────────────────────────────────────
+const questions = [
+  {
+    q: "Manakah yang BUKAN merupakan syarat suatu masalah layak dijadikan topik penelitian?",
+    opts: ["Relevan dengan ilmu yang ditekuni peneliti","Dapat diuji secara ilmiah","Sudah pernah diteliti secara lengkap dan tidak memerlukan penelitian ulang","Mampu mengisi celah pengetahuan (research gap)"],
+    correct: 2,
+    fb: "Benar! Masalah yang sudah terjawab lengkap tidak memerlukan penelitian ulang. Sebaliknya, masalah yang baik justru adalah yang mengisi research gap dari penelitian sebelumnya."
+  },
+  {
+    q: "Pada prinsip 3R, 'Reduction' berarti…",
+    opts: ["Mengganti hewan dengan model komputer","Meminimalkan jumlah hewan yang digunakan melalui desain statistik yang cermat","Mengurangi rasa sakit hewan dengan anestesia","Mengganti hewan dengan organisme lebih rendah"],
+    correct: 1,
+    fb: "Tepat! Reduction = meminimalkan jumlah hewan. Replacement = mengganti hewan dengan alternatif. Refinement = mengurangi penderitaan hewan."
+  },
+  {
+    q: "Sebuah protokol penelitian dikategorikan SANGAT TIDAK LAIK ETIK (STE) jika…",
+    opts: ["Tidak ada informed consent tetapi memiliki nilai ilmiah tinggi","Tidak ada PSP, tidak ada nilai sosial/klinik, tidak ada nilai ilmiah, tidak ada pertimbangan manfaat-risiko","Ada PSP tetapi tidak ada penggantian biaya transportasi","Ada nilai ilmiah tetapi tidak ada nilai klinik"],
+    correct: 1,
+    fb: "Betul! STE adalah kondisi paling berat — di mana semua elemen penting (PSP, nilai sosial, nilai ilmiah, pertimbangan risiko) semuanya absen."
+  },
+  {
+    q: "Dalam konteks subjek rentan, yang WAJIB dilakukan peneliti adalah…",
+    opts: ["Menghindari sama sekali subjek rentan dalam penelitian","Melengkapi persetujuan dengan izin wali/keluarga dan membatasi risiko minimal","Memberikan insentif finansial besar agar partisipasi lebih sukarela","Menyimpan identitas subjek dalam database publik"],
+    correct: 1,
+    fb: "Benar! Kunci perlindungan subjek rentan adalah: persetujuan tambahan dari wali, risiko minimal, dan riset hanya boleh dilakukan untuk kondisi yang memang memengaruhi kelompok tersebut."
+  },
+  {
+    q: "Prinsip '5F' (Five Freedoms) dalam penelitian hewan: manakah pernyataan yang PALING TEPAT mengenai asal-usulnya?",
+    opts: ["Seluruhnya dicetuskan oleh WHO pada Konferensi Jenewa 1972","Berakar dari Brambell Report 1965 (Inggris), lalu dikodifikasi secara formal oleh FAWC pada 5 Desember 1979","Diperkenalkan bersamaan dengan berdirinya IACUC melalui amandemen AWA 1985","Dicetuskan oleh Russell & Burch dalam buku Humane Experimental Technique 1959"],
+    correct: 1,
+    fb: "Tepat! Five Freedoms bermula dari penyelidikan parlemen Inggris (Brambell Report, 1965), kemudian dikodifikasi secara formal oleh Farm Animal Welfare Council (FAWC) pada 5 Desember 1979. Ini dua tahap sejarah yang berbeda dan keduanya penting."
+  }
+];
+
+let qIndex = 0, score = 0, answered = false;
+
+function loadQuestion() {
+  const q = questions[qIndex];
+  document.getElementById('q1-text').textContent = (qIndex+1) + '. ' + q.q;
+  const optsEl = document.getElementById('q1-opts');
+  optsEl.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('div');
+    btn.className = 'quiz-option';
+    btn.textContent = String.fromCharCode(65+i) + '. ' + opt;
+    btn.onclick = () => selectAnswer(i, btn);
+    optsEl.appendChild(btn);
+  });
+  document.getElementById('q1-fb').className = 'quiz-feedback';
+  document.getElementById('q1-fb').textContent = '';
+  document.getElementById('q1-next').classList.remove('show');
+  answered = false;
+}
+
+function selectAnswer(idx, btn) {
+  if (answered) return;
+  answered = true;
+  const q = questions[qIndex];
+  const allOpts = document.querySelectorAll('#q1-opts .quiz-option');
+  allOpts.forEach(o => o.classList.add('disabled'));
+  const fb = document.getElementById('q1-fb');
+  if (idx === q.correct) {
+    btn.classList.add('correct');
+    fb.className = 'quiz-feedback correct-fb show';
+    fb.textContent = '✅ ' + q.fb;
+    score++;
+  } else {
+    btn.classList.add('incorrect');
+    allOpts[q.correct].classList.add('correct');
+    fb.className = 'quiz-feedback incorrect-fb show';
+    fb.textContent = '❌ Kurang tepat. ' + q.fb;
+  }
+  const nextBtn = document.getElementById('q1-next');
+  nextBtn.textContent = qIndex < questions.length-1 ? 'Soal Berikutnya →' : 'Lihat Hasil 🎯';
+  nextBtn.classList.add('show');
+}
+
+function nextQuestion() {
+  qIndex++;
+  if (qIndex < questions.length) {
+    loadQuestion();
+  } else {
+    document.getElementById('q1-container').style.display = 'none';
+    document.getElementById('quiz-score').style.display = 'block';
+    document.getElementById('score-val').textContent = score + ' / ' + questions.length;
+  }
+}
+
+function restartQuiz() {
+  qIndex = 0; score = 0; answered = false;
+  document.getElementById('q1-container').style.display = 'block';
+  document.getElementById('quiz-score').style.display = 'none';
+  loadQuestion();
+}
+
+// ── EXAM QUESTIONS (10 soal) ──────────────────────────────────
+const examQuestions = [
+  {
+    q: "Apa yang dimaksud dengan 'research gap' dalam konteks memilih topik penelitian?",
+    opts: [
+      "Jarak waktu antara dua penelitian yang berbeda",
+      "Aspek atau pertanyaan yang belum terjawab dari penelitian-penelitian sebelumnya",
+      "Perbedaan metode antara penelitian kualitatif dan kuantitatif",
+      "Ketidaksesuaian antara topik penelitian dan bidang ilmu peneliti"
+    ],
+    correct: 1,
+    fb: "Research gap adalah celah pengetahuan yang belum dijawab oleh penelitian sebelumnya — inilah justifikasi ilmiah utama mengapa suatu penelitian perlu dilakukan."
+  },
+  {
+    q: "Seorang mahasiswa farmasi ingin meneliti pengaruh ekstrak jahe terhadap kadar gula darah tikus model diabetes. Berdasarkan prinsip 3R, langkah PERTAMA yang harus ia lakukan adalah…",
+    opts: [
+      "Langsung menentukan jumlah tikus yang akan digunakan",
+      "Mengupayakan apakah tersedia model alternatif (in vitro/in silico) yang memadai terlebih dahulu",
+      "Mengurus izin IACUC sesegera mungkin",
+      "Menentukan dosis ekstrak jahe yang akan diujikan"
+    ],
+    correct: 1,
+    fb: "Sesuai hierarki 3R, Replacement harus diupayakan pertama. Peneliti wajib membuktikan bahwa model alternatif (sel, komputer, organisme lebih rendah) tidak memadai sebelum menggunakan hewan vertebrata."
+  },
+  {
+    q: "Manakah berikut ini yang merupakan contoh penerapan prinsip 'Refinement' dalam penelitian hewan coba?",
+    opts: [
+      "Mengurangi jumlah tikus dari 30 menjadi 20 ekor per kelompok melalui power analysis",
+      "Mengganti tikus putih dengan kultur sel hepatosit",
+      "Memberikan analgesik pasca-operasi untuk meminimalkan rasa sakit",
+      "Menggunakan zebrafish sebagai pengganti mencit"
+    ],
+    correct: 2,
+    fb: "Refinement berfokus pada penyempurnaan prosedur untuk meminimalkan penderitaan — pemberian analgesik adalah contoh klasiknya. Mengurangi jumlah = Reduction, mengganti spesies/model = Replacement."
+  },
+  {
+    q: "Paul Ehrlich menerima Nobel Prize in Physiology or Medicine tahun 1908 bersama Élie Metchnikoff. Atas kontribusi apa Nobel tersebut diberikan?",
+    opts: [
+      "Penemuan Salvarsan sebagai pengobatan efektif pertama untuk sifilis",
+      "Pengembangan teknik pewarnaan gram untuk bakteri",
+      "Kontribusi mendasar mereka dalam memahami mekanisme pertahanan imunologis tubuh",
+      "Penemuan antibiotik pertama yang berasal dari jamur"
+    ],
+    correct: 2,
+    fb: "Nobel 1908 Ehrlich & Metchnikoff diberikan atas karya imunologi dasar — bukan atas Salvarsan. Salvarsan baru diumumkan pada 1909–1910, dua tahun setelah Nobel diterimanya."
+  },
+  {
+    q: "Sebuah protokol penelitian memiliki: PSP ada, penggantian biaya ada, nilai sosial dan klinik ada, tetapi tidak ada nilai ilmiah dan tidak ada pertimbangan manfaat-risiko. Protokol ini dikategorikan sebagai…",
+    opts: [
+      "Laik Etik (LE)",
+      "Tidak Laik Etik kategori 1 (TE-1)",
+      "Tidak Laik Etik kategori 2 (TE-2)",
+      "Sangat Tidak Laik Etik (STE)"
+    ],
+    correct: 2,
+    fb: "Ini adalah TE-2: ada PSP dan penggantian biaya, ada nilai sosial/klinik, TETAPI tidak ada nilai ilmiah dan tidak ada pertimbangan manfaat-risiko. Contoh: penelitian yang dilakukan hanya untuk mengejar angka kredit/kum."
+  },
+  {
+    q: "Dalam penelitian yang melibatkan anak-anak sebagai subjek, perlindungan etik yang WAJIB dipenuhi adalah…",
+    opts: [
+      "Memberikan insentif uang saku yang besar untuk memotivasi partisipasi",
+      "Cukup mendapat persetujuan verbal dari anak tanpa perlu melibatkan orang tua",
+      "Melengkapi persetujuan anak dengan izin orang tua/wali dan memastikan risiko minimal",
+      "Mempublikasikan identitas anak sebagai bentuk apresiasi atas partisipasinya"
+    ],
+    correct: 2,
+    fb: "Anak-anak adalah subjek rentan — kapasitas persetujuannya terbatas. Wajib: persetujuan wali/orang tua sebagai tambahan, risiko tidak boleh melebihi minimal, dan penelitian hanya untuk kondisi yang memang relevan dengan kelompok ini."
+  },
+  {
+    q: "Manakah pernyataan yang BENAR mengenai penelitian observasional menggunakan data rekam medik pasien?",
+    opts: [
+      "Tidak memerlukan ethical clearance karena tidak ada intervensi langsung pada pasien",
+      "Hanya memerlukan izin kepala ruangan bangsal yang bersangkutan",
+      "Tetap memerlukan persetujuan etik dari KEPK karena menyangkut data pribadi subjek",
+      "Cukup mendapatkan izin lisan dari pasien tanpa prosedur formal"
+    ],
+    correct: 2,
+    fb: "Semua penelitian kesehatan yang melibatkan manusia sebagai subjek — termasuk yang hanya menggunakan data rekam medik — wajib mendapatkan ethical clearance dari KEPK. Ini melindungi privasi dan kerahasiaan data subjek."
+  },
+  {
+    q: "Kewajiban formal pembentukan IACUC di institusi penelitian pertama kali ditetapkan melalui regulasi…",
+    opts: [
+      "Declaration of Helsinki 1964 yang direvisi oleh WMA",
+      "WHO Laboratory Animal Welfare Guidelines 1980",
+      "Food Security Act 1985 (Improved Standards for Laboratory Animals Act), dengan istilah 'IACUC' resmi diperkenalkan tahun 1986",
+      "Belmont Report 1979 oleh National Commission for the Protection of Human Subjects"
+    ],
+    correct: 2,
+    fb: "Amandemen AWA melalui Food Security Act 1985 mewajibkan pembentukan komite pengawas penggunaan hewan. Istilah resmi 'IACUC' baru diperkenalkan secara formal pada 1986. Belmont Report mengatur penelitian pada manusia, bukan hewan."
+  },
+  {
+    q: "Prinsip Five Freedoms dalam kesejahteraan hewan penelitian berakar dari…",
+    opts: [
+      "Russell & Burch, 1959 dalam The Principles of Humane Experimental Technique",
+      "Brambell Report 1965 (UK), yang kemudian dikodifikasi oleh FAWC pada 1979",
+      "Deklarasi Jenewa World Veterinary Association 1975",
+      "IACUC Federal Guidelines Amerika Serikat, 1986"
+    ],
+    correct: 1,
+    fb: "Five Freedoms memiliki sejarah dua tahap: (1) Brambell Report 1965 dari penyelidikan parlemen Inggris tentang kondisi peternakan intensif, dan (2) Farm Animal Welfare Council (FAWC) yang mengkodifikasi dan memformalkannya pada 5 Desember 1979."
+  },
+  {
+    q: "Seorang peneliti ingin meneliti efek suatu senyawa fitokimia terhadap sel kanker payudara. Ia menggunakan kultur sel MCF-7 (in vitro) sebagai model. Dalam konteks 3R, ini termasuk penerapan prinsip…",
+    opts: [
+      "Refinement — karena prosedurnya lebih halus dari penelitian hewan",
+      "Reduction — karena menggunakan lebih sedikit sumber daya",
+      "Replacement — karena menggantikan penggunaan hewan dengan model alternatif",
+      "Bukan bagian dari 3R karena 3R hanya berlaku untuk hewan vertebrata"
+    ],
+    correct: 2,
+    fb: "Penggunaan kultur sel (in vitro) sebagai pengganti hewan adalah contoh Replacement absolut — prinsip tertinggi dalam hierarki 3R. Ini adalah contoh ideal yang menunjukkan upaya menghindari penggunaan hewan sama sekali."
+  }
+];
+
+let examIndex = 0, examScore = 0, examAnswered = false, studentName = '';
+
+function startExam() {
+  const nameInput = document.getElementById('student-name-input');
+  const name = nameInput.value.trim();
+  if (!name) {
+    document.getElementById('exam-name-err').style.display = 'block';
+    return;
+  }
+  studentName = name;
+  examIndex = 0; examScore = 0; examAnswered = false;
+  document.getElementById('exam-name-screen').style.display = 'none';
+  document.getElementById('exam-screen').style.display = 'block';
+  loadExamQuestion();
+}
+
+function loadExamQuestion() {
+  const q = examQuestions[examIndex];
+  document.getElementById('exam-progress-label').textContent = 'Soal ' + (examIndex+1) + ' dari ' + examQuestions.length;
+  document.getElementById('exam-score-live').textContent = 'Skor: ' + examScore + '/' + examQuestions.length;
+  document.getElementById('exam-progress-bar').style.width = ((examIndex+1)/examQuestions.length*100) + '%';
+  document.getElementById('exam-q-text').textContent = (examIndex+1) + '. ' + q.q;
+  const optsEl = document.getElementById('exam-opts');
+  optsEl.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('div');
+    btn.className = 'quiz-option';
+    btn.textContent = String.fromCharCode(65+i) + '. ' + opt;
+    btn.onclick = () => selectExamAnswer(i, btn);
+    optsEl.appendChild(btn);
+  });
+  document.getElementById('exam-fb').className = 'quiz-feedback';
+  document.getElementById('exam-fb').textContent = '';
+  document.getElementById('exam-next-btn').classList.remove('show');
+  examAnswered = false;
+}
+
+function selectExamAnswer(idx, btn) {
+  if (examAnswered) return;
+  examAnswered = true;
+  const q = examQuestions[examIndex];
+  const allOpts = document.querySelectorAll('#exam-opts .quiz-option');
+  allOpts.forEach(o => o.classList.add('disabled'));
+  const fb = document.getElementById('exam-fb');
+  if (idx === q.correct) {
+    btn.classList.add('correct');
+    examScore++;
+    fb.className = 'quiz-feedback correct-fb show';
+    fb.textContent = '✅ Benar! ' + q.fb;
+  } else {
+    btn.classList.add('incorrect');
+    allOpts[q.correct].classList.add('correct');
+    fb.className = 'quiz-feedback incorrect-fb show';
+    fb.textContent = '❌ Kurang tepat. ' + q.fb;
+  }
+  document.getElementById('exam-score-live').textContent = 'Skor: ' + examScore + '/' + examQuestions.length;
+  const nb = document.getElementById('exam-next-btn');
+  nb.textContent = examIndex < examQuestions.length-1 ? 'Soal Berikutnya →' : 'Selesai & Lihat Sertifikat 🎓';
+  nb.classList.add('show');
+}
+
+function examNextQuestion() {
+  examIndex++;
+  if (examIndex < examQuestions.length) {
+    loadExamQuestion();
+  } else {
+    showCertificate();
+  }
+}
+
+function retakeExam() {
+  examIndex = 0; examScore = 0; examAnswered = false;
+  document.getElementById('student-name-input').value = '';
+  document.getElementById('exam-name-err').style.display = 'none';
+  document.getElementById('exam-screen').style.display = 'none';
+  document.getElementById('exam-name-screen').style.display = 'block';
+  goToSlide(16);
+}
+
+function getGrade(score, total) {
+  const pct = (score/total)*100;
+  if (pct >= 90) return { label: 'A', color: '#4DB6AC', text: 'Sangat Memuaskan' };
+  if (pct >= 80) return { label: 'B', color: '#AED581', text: 'Memuaskan' };
+  if (pct >= 70) return { label: 'C', color: '#FFB300', text: 'Cukup' };
+  if (pct >= 60) return { label: 'D', color: '#FF8A65', text: 'Perlu Perbaikan' };
+  return { label: 'E', color: '#EF5350', text: 'Tidak Lulus' };
+}
+
+function showCertificate() {
+  const grade = getGrade(examScore, examQuestions.length);
+  const pct = Math.round((examScore/examQuestions.length)*100);
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric'});
+
+  document.getElementById('cert-name-display').textContent = studentName;
+  document.getElementById('cert-score-big').textContent = examScore + '/' + examQuestions.length + ' (' + pct + '%)';
+  document.getElementById('cert-grade').textContent = grade.label;
+  document.getElementById('cert-grade').style.color = grade.color;
+  document.getElementById('cert-date').textContent = dateStr;
+  document.getElementById('cert-score-text').textContent =
+    'Selamat ' + studentName + '! Anda memperoleh skor ' + examScore + ' dari ' + examQuestions.length + ' soal (' + pct + '%) — Predikat: ' + grade.text;
+
+  goToSlide(17);
+}
+
+// ── PDF CERTIFICATE GENERATION ────────────────────────────────
+function downloadCertificate() {
+  const canvas = document.createElement('canvas');
+  const W = 1122, H = 794; // A4 landscape ~96dpi
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Background gradient
+  const bg = ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0, '#0a2624');
+  bg.addColorStop(1, '#112e2c');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0,0,W,H);
+
+  // Decorative radial glow
+  const glow = ctx.createRadialGradient(W/2, H/2, 10, W/2, H/2, 500);
+  glow.addColorStop(0, 'rgba(0,137,123,0.18)');
+  glow.addColorStop(1, 'rgba(0,137,123,0)');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0,0,W,H);
+
+  // Outer border
+  ctx.strokeStyle = '#00897B';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(24, 24, W-48, H-48);
+
+  // Inner border
+  ctx.strokeStyle = 'rgba(0,137,123,0.35)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(36, 36, W-72, H-72);
+
+  // Corner ornaments
+  const corners = [[44,44],[W-44,44],[44,H-44],[W-44,H-44]];
+  corners.forEach(([x,y]) => {
+    ctx.strokeStyle = '#FFB300';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    const s = 28;
+    const sx = x < W/2 ? 1 : -1;
+    const sy = y < H/2 ? 1 : -1;
+    ctx.moveTo(x, y + sy*s);
+    ctx.lineTo(x, y);
+    ctx.lineTo(x + sx*s, y);
+    ctx.stroke();
+  });
+
+  // Medal emoji area (top center)
+  ctx.font = '54px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('🏅', W/2, 130);
+
+  // Institution
+  ctx.fillStyle = '#4DB6AC';
+  ctx.font = '600 14px sans-serif';
+  ctx.letterSpacing = '3px';
+  ctx.fillText('UNIVERSITAS KATOLIK INDONESIA ATMA JAYA', W/2, 170);
+  ctx.fillStyle = '#90A4AE';
+  ctx.font = '12px sans-serif';
+  ctx.fillText('Program Studi S1 Farmasi · Fakultas Kedokteran dan Ilmu Kesehatan', W/2, 192);
+
+  // Divider line
+  ctx.strokeStyle = 'rgba(0,137,123,0.4)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(W/2-280, 210); ctx.lineTo(W/2+280, 210); ctx.stroke();
+
+  // "Sertifikat Penyelesaian"
+  ctx.fillStyle = '#90A4AE';
+  ctx.font = '500 13px sans-serif';
+  ctx.fillText('SERTIFIKAT PENYELESAIAN MODUL', W/2, 240);
+
+  // Module title
+  ctx.fillStyle = '#F8FDFC';
+  ctx.font = 'bold 28px serif';
+  ctx.fillText('Pendahuluan Metodologi Penelitian', W/2, 282);
+
+  // "Diberikan kepada"
+  ctx.fillStyle = '#90A4AE';
+  ctx.font = '13px sans-serif';
+  ctx.fillText('Diberikan kepada:', W/2, 332);
+
+  // Student name
+  ctx.fillStyle = '#FFB300';
+  ctx.font = 'bold 42px serif';
+  ctx.fillText(studentName, W/2, 388);
+
+  // Name underline
+  const nameW = ctx.measureText(studentName).width;
+  ctx.strokeStyle = 'rgba(255,179,0,0.4)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(W/2 - nameW/2 - 20, 400);
+  ctx.lineTo(W/2 + nameW/2 + 20, 400);
+  ctx.stroke();
+
+  // Score & Grade boxes
+  const grade = getGrade(examScore, examQuestions.length);
+  const pct = Math.round((examScore/examQuestions.length)*100);
+
+  // Score box
+  ctx.fillStyle = 'rgba(0,137,123,0.15)';
+  roundRect(ctx, W/2 - 220, 420, 190, 90, 12);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(0,137,123,0.5)';
+  ctx.lineWidth = 1;
+  roundRect(ctx, W/2 - 220, 420, 190, 90, 12);
+  ctx.stroke();
+
+  ctx.fillStyle = '#4DB6AC';
+  ctx.font = 'bold 32px sans-serif';
+  ctx.fillText(examScore + '/' + examQuestions.length + ' (' + pct + '%)', W/2 - 125, 470);
+  ctx.fillStyle = '#90A4AE';
+  ctx.font = '11px sans-serif';
+  ctx.fillText('SKOR PEROLEHAN', W/2 - 125, 496);
+
+  // Grade box
+  ctx.fillStyle = 'rgba(255,179,0,0.1)';
+  roundRect(ctx, W/2 + 30, 420, 190, 90, 12);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,179,0,0.4)';
+  ctx.lineWidth = 1;
+  roundRect(ctx, W/2 + 30, 420, 190, 90, 12);
+  ctx.stroke();
+
+  ctx.fillStyle = grade.color;
+  ctx.font = 'bold 32px sans-serif';
+  ctx.fillText(grade.label + ' — ' + grade.text, W/2 + 125, 470);
+  ctx.fillStyle = '#90A4AE';
+  ctx.font = '11px sans-serif';
+  ctx.fillText('PREDIKAT', W/2 + 125, 496);
+
+  // Date & lecturer
+  const now2 = new Date();
+  const dateStr2 = now2.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+  ctx.fillStyle = '#F8FDFC';
+  ctx.font = '13px sans-serif';
+  ctx.fillText('Jakarta, ' + dateStr2, W/2, 548);
+  ctx.fillStyle = '#90A4AE';
+  ctx.font = '12px sans-serif';
+  ctx.fillText('apt. Dion Notario, M.Sc. · Dosen Pengampu', W/2, 570);
+
+  // Bottom divider
+  ctx.strokeStyle = 'rgba(0,137,123,0.3)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(W/2-280, 595); ctx.lineTo(W/2+280, 595); ctx.stroke();
+
+  // Footer
+  ctx.fillStyle = 'rgba(144,164,174,0.5)';
+  ctx.font = '11px sans-serif';
+  ctx.fillText('Modul Interaktif Metodologi Penelitian — Pendahuluan · Program Studi S1 Farmasi FKIK Unika Atma Jaya', W/2, 620);
+
+  // Watermark pattern (subtle dots)
+  ctx.fillStyle = 'rgba(0,137,123,0.04)';
+  for(let i=0;i<W;i+=30) for(let j=0;j<H;j+=30) {
+    ctx.beginPath(); ctx.arc(i,j,2,0,Math.PI*2); ctx.fill();
+  }
+
+  // Convert to image and trigger download via hidden link
+  canvas.toBlob(blob => {
+    // Build a minimal PDF manually containing this image
+    const reader = new FileReader();
+    reader.onload = () => {
+      const imgData = reader.result; // data URL
+      buildAndDownloadPDF(imgData, W, H);
+    };
+    reader.readAsDataURL(blob);
+  }, 'image/jpeg', 0.97);
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y);
+  ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r);
+  ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h);
+  ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r);
+  ctx.quadraticCurveTo(x, y, x+r, y);
+  ctx.closePath();
+}
+
+function buildAndDownloadPDF(imgDataUrl, imgW, imgH) {
+  // PDF A4 landscape: 842 x 595 pt (1pt = 1/72 inch)
+  // We'll embed the JPEG as an XObject image
+  const base64 = imgDataUrl.split(',')[1];
+  const imgBytes = atob(base64);
+  const imgLen = imgBytes.length;
+
+  // PDF structure (manual construction)
+  const W_pt = 842, H_pt = 595;
+
+  // Build objects
+  const objs = [];
+
+  // obj 1: catalog
+  objs.push('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj');
+
+  // obj 2: pages
+  objs.push('2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj');
+
+  // obj 3: page
+  objs.push('3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + W_pt + ' ' + H_pt + '] /Contents 4 0 R /Resources << /XObject << /Img1 5 0 R >> >> >>\nendobj');
+
+  // obj 4: content stream (draw image full page)
+  const stream = 'q ' + W_pt + ' 0 0 ' + H_pt + ' 0 0 cm /Img1 Do Q';
+  objs.push('4 0 obj\n<< /Length ' + stream.length + ' >>\nstream\n' + stream + '\nendstream\nendobj');
+
+  // obj 5: image XObject
+  const imgHeader = '5 0 obj\n<< /Type /XObject /Subtype /Image /Width ' + imgW + ' /Height ' + imgH +
+    ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ' + imgLen + ' >>\nstream\n';
+  const imgFooter = '\nendstream\nendobj';
+
+  // Build xref
+  let pdfStr = '%PDF-1.4\n';
+  const offsets = [];
+  objs.forEach(obj => {
+    offsets.push(pdfStr.length);
+    pdfStr += obj + '\n';
+  });
+
+  // For obj 5 we handle separately (binary)
+  const obj5Offset = pdfStr.length;
+  pdfStr += imgHeader;
+
+  // Build full PDF as Uint8Array
+  const enc = new TextEncoder();
+  const headerBytes  = enc.encode(pdfStr);
+  const footerBytes  = enc.encode(imgFooter + '\n');
+
+  // xref table
+  let xref = 'xref\n0 7\n0000000000 65535 f \n';
+  offsets.forEach(o => { xref += o.toString().padStart(10,'0') + ' 00000 n \n'; });
+  xref += obj5Offset.toString().padStart(10,'0') + ' 00000 n \n';
+  // obj 6 (not real — we're using a simpler approach below)
+
+  const xrefOffset = headerBytes.length + imgLen + footerBytes.length;
+
+  const trailer = '\ntrailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n' + xrefOffset + '\n%%EOF';
+
+  // Assemble
+  const imgUint8 = new Uint8Array(imgLen);
+  for (let i=0;i<imgLen;i++) imgUint8[i] = imgBytes.charCodeAt(i);
+
+  const footerFull = enc.encode(imgFooter + '\n' + 'xref\n0 6\n0000000000 65535 f \n');
+  // Use simpler approach: just embed as single-page PDF with correct structure
+  const total = headerBytes.length + imgUint8.length + footerBytes.length;
+  const xrefBytes = enc.encode(
+    'xref\n0 6\n' +
+    '0000000000 65535 f \n' +
+    offsets[0].toString().padStart(10,'0') + ' 00000 n \n' +
+    offsets[1].toString().padStart(10,'0') + ' 00000 n \n' +
+    offsets[2].toString().padStart(10,'0') + ' 00000 n \n' +
+    offsets[3].toString().padStart(10,'0') + ' 00000 n \n' +
+    obj5Offset.toString().padStart(10,'0') + ' 00000 n \n' +
+    'trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n' +
+    (headerBytes.length + imgUint8.length + footerBytes.length) +
+    '\n%%EOF'
+  );
+
+  const finalPDF = new Uint8Array(headerBytes.length + imgUint8.length + footerBytes.length + xrefBytes.length);
+  finalPDF.set(headerBytes, 0);
+  finalPDF.set(imgUint8, headerBytes.length);
+  finalPDF.set(footerBytes, headerBytes.length + imgUint8.length);
+  finalPDF.set(xrefBytes, headerBytes.length + imgUint8.length + footerBytes.length);
+
+  const blob = new Blob([finalPDF], {type:'application/pdf'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const safeName = studentName.replace(/[^a-zA-Z0-9_\-\s]/g,'').replace(/\s+/g,'_');
+  a.href     = url;
+  a.download = 'Sertifikat_' + safeName + '_MetodologiPenelitian.pdf';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── TASK CHECKLIST ────────────────────────────────────────────
+function updateChecklist() {
+  const boxes = document.querySelectorAll('.task-check input[type=checkbox]');
+  const done = [...boxes].filter(b=>b.checked).length;
+  const el = document.getElementById('task-progress');
+  if (!el) return;
+  el.textContent = done + ' dari ' + boxes.length + ' item diselesaikan ' + (done===boxes.length ? '✅ Lengkap!' : '');
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+buildDots();
+updateProgress();
+loadQuestion();
+</script>
+
+</body>
+</html>
